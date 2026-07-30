@@ -4,11 +4,21 @@ Reusable harness for Cosmos embedded product development: English doc templates 
 
 ## Install skills (once per machine)
 
-Skills are installed under `~/.cursor/skills/` so they apply to **all** your repos:
+Skills are installed under `~/.cursor/skills/` so they apply to **all** your **local** repos:
 
 ```bash
 ./tools/install-skills.sh
 ```
+
+Cloud Agents do **not** see `~/.cursor/skills/`. For cloud (or per-repo pinning), copy skills into the product:
+
+```bash
+./tools/install-skills-to-project.sh /path/to/product-repo
+./tools/install-skills-to-project.sh /path/to/product-repo --force
+./tools/install-skills-to-project.sh /path/to/product-repo cosmos-architect cosmos-embedded
+```
+
+That writes `product/.cursor/skills/…`. **Commit that folder** in the product repo so Cloud Agents can use `/cosmos-architect`, etc.
 
 | Skill | Role |
 |-------|------|
@@ -27,6 +37,8 @@ Creates `~/myProjects/<name>` (or another parent), `git init` on `main`, a minim
 ./tools/new-project.sh my-sensor
 ./tools/new-project.sh my-sensor ~/myProjects   # optional parent dir
 ```
+
+Does **not** copy skills into the product. Local work uses `~/.cursor/skills/` via `install-skills.sh`. For Cloud Agents, run `install-skills-to-project.sh` yourself when you want that control.
 
 Then open **that product repo** in Cursor and run the Architect (`cosmos-architect`) to lock the platform in `docs/ARCHITECTURE.md`.
 
@@ -62,9 +74,10 @@ Legacy repos already in production (e.g. FivePieceBasis) stay outside this flow.
 cosmos-embedded-systems/
 ├── README.md
 ├── templates/docs/     # English templates copied into product repos
-├── skills/             # canonical skill sources (install to ~/.cursor/skills)
+├── skills/             # canonical skill sources
 └── tools/
-    ├── new-project.sh       # mkdir + git init + bootstrap docs
-    ├── install-skills.sh
+    ├── new-project.sh                 # mkdir + git init + docs only
+    ├── install-skills.sh              # -> ~/.cursor/skills (local)
+    ├── install-skills-to-project.sh   # opt-in -> product/.cursor/skills (cloud)
     └── bootstrap-docs.sh
 ```

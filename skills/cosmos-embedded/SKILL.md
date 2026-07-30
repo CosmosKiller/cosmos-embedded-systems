@@ -42,6 +42,16 @@ Or bootstrap docs into an existing repo:
 ~/myProjects/cosmos-embedded-systems/tools/bootstrap-docs.sh /path/to/product-repo
 ```
 
+For Cloud Agents, copy skills into the product **only when you choose**, then commit them:
+
+```bash
+~/myProjects/cosmos-embedded-systems/tools/install-skills-to-project.sh /path/to/product-repo
+# overwrite existing project skills only if intentional:
+~/myProjects/cosmos-embedded-systems/tools/install-skills-to-project.sh /path/to/product-repo --force
+```
+
+(`new-project.sh` does **not** do this automatically.)
+
 ## Role skills (subagents)
 
 Read and follow the matching skill before doing that role's work:
