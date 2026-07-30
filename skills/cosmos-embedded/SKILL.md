@@ -21,6 +21,7 @@ All harness output is **English**. Platform is never assumed: the human and the 
 | `docs/HARDWARE.md` | Per project — HW source of truth | `cosmos-hardware` |
 | `docs/BUILD.md` | Per project — platform build | `cosmos-firmware` |
 | `docs/MANUFACTURING.md` | Per project — factory flow | `cosmos-manufacturing` |
+| `docs/HOME_ASSISTANT.md` | Per project — HA adoption | `cosmos-home-assistant` |
 | `docs/CODE_STYLE.md` | Shared template | `cosmos-firmware` |
 | `docs/REPO_LAYOUT.md` | Shared template | `cosmos-firmware` |
 | `docs/RELEASING.md` | Shared template | `cosmos-release` |
@@ -42,11 +43,13 @@ Or bootstrap docs into an existing repo:
 ~/myProjects/cosmos-embedded-systems/tools/bootstrap-docs.sh /path/to/product-repo
 ```
 
-For Cloud Agents, copy skills into the product **only when you choose**, then commit them:
+For Cloud Agents, copy **agents and skills** into the product **only when you choose**, then commit them:
 
 ```bash
+~/myProjects/cosmos-embedded-systems/tools/install-agents-to-project.sh /path/to/product-repo
 ~/myProjects/cosmos-embedded-systems/tools/install-skills-to-project.sh /path/to/product-repo
-# overwrite existing project skills only if intentional:
+# overwrite existing copies only if intentional:
+~/myProjects/cosmos-embedded-systems/tools/install-agents-to-project.sh /path/to/product-repo --force
 ~/myProjects/cosmos-embedded-systems/tools/install-skills-to-project.sh /path/to/product-repo --force
 ```
 
@@ -54,17 +57,21 @@ For Cloud Agents, copy skills into the product **only when you choose**, then co
 
 ## Role skills (subagents)
 
-Read and follow the matching skill before doing that role's work:
+**Subagents** (`.cursor/agents/` / `~/.cursor/agents/`) are the roles the parent Agent **delegates** to — isolated context per [Cursor Subagents](https://cursor.com/docs/subagents).
 
-| Role | Skill | Primary outputs |
-|------|-------|-----------------|
-| Architect | `cosmos-architect` | `ARCHITECTURE.md`, platform lock, phased plan |
-| Firmware | `cosmos-firmware` | code, `BUILD.md`, layout/style compliance |
-| Hardware | `cosmos-hardware` | `HARDWARE.md` (schema + device sections) |
-| Manufacturing | `cosmos-manufacturing` | `MANUFACTURING.md`, factory steps |
-| Release / QA | `cosmos-release` | version bumps, tags, release checklist |
+**Skills** (`skills/*/SKILL.md`) remain the detailed playbooks each subagent must read first.
 
-When using Cursor Task/subagents, give each the same role brief: English only, read the skill file, touch only that role's docs/code unless asked.
+| Role | Subagent | Skill playbook | Primary outputs |
+|------|----------|----------------|-----------------|
+| Orchestrator | `cosmos-orchestrator` | `cosmos-embedded` | pipeline / hand-offs |
+| Architect | `cosmos-architect` | `cosmos-architect` | `ARCHITECTURE.md`, platform lock, action plan |
+| Firmware | `cosmos-firmware` | `cosmos-firmware` | code, `BUILD.md`, layout/style compliance |
+| Hardware | `cosmos-hardware` | `cosmos-hardware` | `HARDWARE.md` (schema + device sections) |
+| Home Assistant | `cosmos-home-assistant` | `cosmos-home-assistant` | packages, Lovelace, cards, `HOME_ASSISTANT.md` |
+| Manufacturing | `cosmos-manufacturing` | `cosmos-manufacturing` | `MANUFACTURING.md`, factory steps |
+| Release / QA | `cosmos-release` | `cosmos-release` | version bumps, tags, release checklist |
+
+When coordinating: invoke `/cosmos-orchestrator` or ask the parent to delegate. Prefer `/cosmos-architect` (etc.) for an explicit specialist. Pass each specialist a self-contained brief — subagents do not see prior chat history.
 
 ## Pipeline
 
@@ -74,8 +81,9 @@ When using Cursor Task/subagents, give each the same role brief: English only, r
 4. **Hardware definition** → `HARDWARE.md` design rules + first device section.
 5. **Firmware skeleton** → layout + style + `BUILD.md` + bring-up.
 6. **Features** → product work with GPIO SoT in HARDWARE.
-7. **Manufacturing** → `MANUFACTURING.md` + dry-run factory flow.
-8. **Test / release** → checklists + `RELEASING.md`.
+7. **Home Assistant adoption** → packages / Lovelace / cards (`cosmos-home-assistant`) when the product targets HA.
+8. **Manufacturing** → `MANUFACTURING.md` + dry-run factory flow.
+9. **Test / release** → checklists + `RELEASING.md`.
 
 Do not skip the platform agreement. Do not invent SKU pinouts that disagree with firmware.
 

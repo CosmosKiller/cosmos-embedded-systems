@@ -33,6 +33,7 @@ After agreement, set status to `agreed` and hand off:
 
 - Hardware → `cosmos-hardware` / `HARDWARE.md`
 - Firmware → `cosmos-firmware` / `BUILD.md` + code skeleton
+- Home Assistant (if in scope) → `cosmos-home-assistant` / `HOME_ASSISTANT.md` + `home-assistant/`
 - Manufacturing → `cosmos-manufacturing` (after build artifacts exist)
 
 ## Template

@@ -140,17 +140,24 @@ Phased plan from idea → bring-up → manufacture → test. Adjust phases to th
 - [ ] …
 - [ ] …
 
-### Phase 4 — Manufacturing readiness
+### Phase 4 — Home Assistant adoption (when HA is in scope)
+
+- [ ] Fill [HOME_ASSISTANT.md](HOME_ASSISTANT.md); choose adoption rung
+- [ ] Ship `home-assistant/packages/` (+ Lovelace view)
+- [ ] Commission walkthrough + entity rename checklist
+
+### Phase 5 — Manufacturing readiness
 
 - [ ] Fill [MANUFACTURING.md](MANUFACTURING.md)
 - [ ] Factory flash / identity / labeling flow
 - [ ] DFM pass (see HARDWARE PCB fabrication defaults)
 
-### Phase 5 — Test and release
+### Phase 6 — Test and release
 
 - [ ] Bring-up and factory test checklist
 - [ ] Versioning per [RELEASING.md](RELEASING.md)
 - [ ] First tagged release candidate
+- [ ] HA gift / field path verified if applicable
 
 ---
 
@@ -162,6 +169,7 @@ Phased plan from idea → bring-up → manufacture → test. Adjust phases to th
 | [HARDWARE.md](HARDWARE.md) | Architect / HW | Pinout, BOM, power, PCB rules |
 | [BUILD.md](BUILD.md) | Firmware | Toolchain, targets, artifacts |
 | [MANUFACTURING.md](MANUFACTURING.md) | Manufacturing / FW | Factory data, flash, ship kits |
+| [HOME_ASSISTANT.md](HOME_ASSISTANT.md) | Home Assistant | Packages, Lovelace, adoption UX |
 | [CODE_STYLE.md](CODE_STYLE.md) | System (shared) | Style policy changes |
 | [REPO_LAYOUT.md](REPO_LAYOUT.md) | System (shared) | Layout policy changes |
 | [RELEASING.md](RELEASING.md) | System (shared) | Release policy changes |

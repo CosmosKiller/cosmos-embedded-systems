@@ -24,8 +24,14 @@ Target professional baseline for Cosmos embedded firmware repos. Shaped by ESP-I
 ├── tools/
 │   ├── mfg/                 # manufacturing helpers
 │   └── scripts/
+├── home-assistant/          # optional — HA packages, Lovelace, custom cards
+│   ├── packages/
+│   ├── lovelace/
+│   └── README.md
 └── .github/workflows/       # optional CI matrix builds
 ```
+
+When the product targets Home Assistant, keep canonical YAML under `home-assistant/` and document adoption in [HOME_ASSISTANT.md](HOME_ASSISTANT.md) (`cosmos-home-assistant`).
 
 ## Per-app layout (preferred)
 

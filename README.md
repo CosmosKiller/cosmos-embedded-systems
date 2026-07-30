@@ -1,33 +1,57 @@
 # cosmos-embedded-systems
 
-Reusable harness for Cosmos embedded product development: English doc templates plus Cursor role skills (subagents) covering idea → architecture → hardware → firmware → manufacturing → test/release.
+Reusable harness for Cosmos embedded product development: English doc templates, Cursor **subagents** (roles), and **skills** (playbooks) covering idea → architecture → hardware → firmware → Home Assistant → manufacturing → release.
 
-## Install skills (once per machine)
+## Subagents vs skills
 
-Skills are installed under `~/.cursor/skills/` so they apply to **all** your **local** repos:
+Per [Cursor Subagents](https://cursor.com/docs/subagents):
+
+| Layer | What it is | Where |
+|-------|------------|--------|
+| **Subagents** | Specialist roles the parent Agent **delegates** to (own context) | `agents/*.md` → `~/.cursor/agents/` |
+| **Skills** | Detailed playbooks each subagent reads first | `skills/*/SKILL.md` → `~/.cursor/skills/` |
+
+Keep both: subagents for isolation/delegation; skills for procedures and template pointers.
+
+## Install locally (once per machine)
 
 ```bash
-./tools/install-skills.sh
+./tools/install-skills.sh    # playbooks -> ~/.cursor/skills/
+./tools/install-agents.sh    # roles     -> ~/.cursor/agents/
 ```
 
-Cloud Agents do **not** see `~/.cursor/skills/`. For cloud (or per-repo pinning), copy skills into the product:
+Then in Agent chat:
+
+```text
+/cosmos-architect …
+/cosmos-orchestrator …
+```
+
+Or ask naturally: “Use the cosmos-architect subagent to lock the platform.”
+
+| Subagent | Skill playbook | Role |
+|----------|----------------|------|
+| `cosmos-orchestrator` | `cosmos-embedded` | Pipeline / hand-offs |
+| `cosmos-architect` | `cosmos-architect` | `ARCHITECTURE.md`, platform agreement |
+| `cosmos-hardware` | `cosmos-hardware` | `HARDWARE.md` |
+| `cosmos-firmware` | `cosmos-firmware` | Code, layout/style, `BUILD.md` |
+| `cosmos-home-assistant` | `cosmos-home-assistant` | HA packages, Lovelace, cards |
+| `cosmos-manufacturing` | `cosmos-manufacturing` | `MANUFACTURING.md`, factory flow |
+| `cosmos-release` | `cosmos-release` | SemVer, tags, release QA |
+
+## Cloud / per-product (opt-in)
+
+Personal `~/.cursor/agents` and `~/.cursor/skills` do **not** sync to Cloud Agents. When you want a product to carry them:
 
 ```bash
+./tools/install-agents-to-project.sh /path/to/product-repo
 ./tools/install-skills-to-project.sh /path/to/product-repo
+# refresh copies:
+./tools/install-agents-to-project.sh /path/to/product-repo --force
 ./tools/install-skills-to-project.sh /path/to/product-repo --force
-./tools/install-skills-to-project.sh /path/to/product-repo cosmos-architect cosmos-embedded
 ```
 
-That writes `product/.cursor/skills/…`. **Commit that folder** in the product repo so Cloud Agents can use `/cosmos-architect`, etc.
-
-| Skill | Role |
-|-------|------|
-| `cosmos-embedded` | Orchestrator / pipeline |
-| `cosmos-architect` | `ARCHITECTURE.md`, platform agreement |
-| `cosmos-hardware` | `HARDWARE.md` schema + device sections |
-| `cosmos-firmware` | Code, layout/style, `BUILD.md` |
-| `cosmos-manufacturing` | `MANUFACTURING.md`, factory flow |
-| `cosmos-release` | SemVer, tags, release QA |
+**Commit** `.cursor/agents/` and `.cursor/skills/` in that product. `new-project.sh` does **not** do this automatically.
 
 ## Start a new product project
 
@@ -38,9 +62,7 @@ Creates `~/myProjects/<name>` (or another parent), `git init` on `main`, a minim
 ./tools/new-project.sh my-sensor ~/myProjects   # optional parent dir
 ```
 
-Does **not** copy skills into the product. Local work uses `~/.cursor/skills/` via `install-skills.sh`. For Cloud Agents, run `install-skills-to-project.sh` yourself when you want that control.
-
-Then open **that product repo** in Cursor and run the Architect (`cosmos-architect`) to lock the platform in `docs/ARCHITECTURE.md`.
+Then open **that product repo** in Cursor and run `/cosmos-architect` to lock the platform in `docs/ARCHITECTURE.md`.
 
 Legacy repos already in production (e.g. FivePieceBasis) stay outside this flow.
 
@@ -60,6 +82,7 @@ Legacy repos already in production (e.g. FivePieceBasis) stay outside this flow.
 | `HARDWARE.md` | Per project — HW source of truth (design rules + per-device sections) |
 | `BUILD.md` | Per project — platform build system |
 | `MANUFACTURING.md` | Per project — factory / flash / ship |
+| `HOME_ASSISTANT.md` | Per project — HA packages / Lovelace / adoption |
 | `CODE_STYLE.md` | Shared C/C++ style (ESP-IDF-shaped, portable) |
 | `REPO_LAYOUT.md` | Shared repo / app / components layout |
 | `RELEASING.md` | Shared versioning and tag rules |
@@ -73,11 +96,14 @@ Legacy repos already in production (e.g. FivePieceBasis) stay outside this flow.
 ```
 cosmos-embedded-systems/
 ├── README.md
-├── templates/docs/     # English templates copied into product repos
-├── skills/             # canonical skill sources
+├── agents/             # Cursor subagents (thin role prompts)
+├── skills/             # playbooks each subagent reads
+├── templates/docs/     # English templates for product repos
 └── tools/
-    ├── new-project.sh                 # mkdir + git init + docs only
-    ├── install-skills.sh              # -> ~/.cursor/skills (local)
-    ├── install-skills-to-project.sh   # opt-in -> product/.cursor/skills (cloud)
-    └── bootstrap-docs.sh
+    ├── new-project.sh
+    ├── bootstrap-docs.sh
+    ├── install-skills.sh
+    ├── install-agents.sh
+    ├── install-skills-to-project.sh   # opt-in cloud
+    └── install-agents-to-project.sh   # opt-in cloud
 ```
