@@ -111,3 +111,9 @@ When rung 6 is justified:
 - Hard-coding uncommissioned entity ids with no TODO checklist.
 - Duplicating business logic in HA that belongs in firmware (safety interlocks, etc.) without Architect agreement.
 - Shipping packages that require HACS for the MVP gift path unless Architecture accepts that dependency.
+
+## MCP
+
+No Cosmos-standard Home Assistant MCP yet. Prefer product `home-assistant/` + current HA docs. Use Espressif/Matter MCP only when mapping firmware clusters/attributes to HA entities.
+
+Details: [mcp.md](../cosmos-embedded/mcp.md).

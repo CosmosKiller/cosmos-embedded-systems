@@ -13,6 +13,10 @@ Per [Cursor Subagents](https://cursor.com/docs/subagents):
 
 Keep both: subagents for isolation/delegation; skills for procedures and template pointers.
 
+## MCP
+
+Local subagents **inherit MCP tools from the parent session** and should use them when they apply (Espressif docs, ESP Component Registry, Flux, etc.). Cloud subagents see MCP from [cursor.com/agents](https://cursor.com/agents), not your laptop list. Playbook: `skills/cosmos-embedded/mcp.md`.
+
 ## Install locally (once per machine)
 
 ```bash

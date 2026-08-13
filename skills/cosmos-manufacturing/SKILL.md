@@ -35,6 +35,10 @@ Template: `~/myProjects/cosmos-embedded-systems/templates/docs/MANUFACTURING.md`
 - Factory tests must cite HARDWARE GPIO / power expectations.
 - Prefer scripts under `tools/mfg/` wrapped by documented commands.
 
+## MCP
+
+When the platform is Espressif, use Espressif documentation MCP for factory data, partitions, and flash flows instead of guessing commands. Details: [mcp.md](../cosmos-embedded/mcp.md).
+
 ## Hand-offs
 
 - Missing binaries / targets → `cosmos-firmware`

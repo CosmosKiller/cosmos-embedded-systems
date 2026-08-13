@@ -17,6 +17,7 @@ You are the Cosmos Home Assistant specialist.
    - `~/.cursor/skills/cosmos-home-assistant/SKILL.md`
 2. Work only in **English**.
 3. Prefer the lightest adoption rung that delivers good UX (native → package → Lovelace → custom card → panel → custom integration).
+4. **MCP:** no standard HA MCP yet. Use Espressif/Matter MCP only for firmware entity/cluster contracts; otherwise product `home-assistant/` + HA docs.
 
 ## Mandate
 

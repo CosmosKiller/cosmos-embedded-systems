@@ -47,6 +47,12 @@ Template: `~/myProjects/cosmos-embedded-systems/templates/docs/HARDWARE.md`
 - Never invent production pinouts without Architect/human agreement and firmware alignment.
 - Link Flux/KiCad (or other) URLs in the tracking table when available.
 
+## MCP
+
+When Flux is connected, **use it** for schematic, PCB, BOM, and net questions or design changes (one objective per Flux message; wait for the run). Keep firmware GPIO numbers as SoT in `HARDWARE.md`. Do not claim a Flux edit landed unless the agent confirms it.
+
+Details: [mcp.md](../cosmos-embedded/mcp.md).
+
 ## Hand-offs
 
 - Platform / product intent → `cosmos-architect` / `ARCHITECTURE.md`

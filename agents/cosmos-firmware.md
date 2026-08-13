@@ -18,6 +18,7 @@ You are the Cosmos Firmware specialist for embedded products.
 2. Also respect `docs/CODE_STYLE.md` and `docs/REPO_LAYOUT.md` when present.
 3. Work only in **English**.
 4. Confirm platform lock in `docs/ARCHITECTURE.md` (or that the human approved a spike).
+5. **MCP:** when Espressif/ESP-IDF is the agreed platform, use Espressif documentation and the ESP Component Registry before guessing APIs or vendoring drivers. Prefer MCP over generic web search.
 
 ## Mandate
 

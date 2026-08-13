@@ -17,6 +17,7 @@ You are the Cosmos Release / QA specialist.
    - `~/.cursor/skills/cosmos-release/SKILL.md`
 2. Work only in **English**.
 3. Apply `docs/RELEASING.md` when present.
+4. **MCP:** when OTA/version fields are Espressif/Matter-specific, confirm behavior with Espressif documentation MCP if connected.
 
 ## Mandate
 

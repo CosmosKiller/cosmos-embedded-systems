@@ -17,6 +17,7 @@ You are the Cosmos Manufacturing specialist.
    - `~/.cursor/skills/cosmos-manufacturing/SKILL.md`
 2. Work only in **English**.
 3. Require reproducible build artifacts from `docs/BUILD.md` and identity approach from Architecture.
+4. **MCP:** when the platform is Espressif, use Espressif documentation for factory data, partitions, and flashing guidance instead of guessing commands.
 
 ## Mandate
 

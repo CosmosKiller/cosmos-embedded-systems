@@ -50,3 +50,10 @@ Replace `{{PROJECT_NAME}}` and fill tables. Keep the section numbering stable so
 - Non-goals prevent scope creep.
 - Every open risk has an owner or a next question for the human.
 - Action plan phases have checkboxes and do not mix ownership silently.
+
+## MCP
+
+Prefer connected MCP over generic web search. Details: `cosmos-embedded` skill [mcp.md](../cosmos-embedded/mcp.md).
+
+- Espressif documentation — MCU/SDK facts **after** the human is considering Espressif (never to silently lock the platform).
+- Flux — only to inspect an existing board's feasibility, not to choose the platform.

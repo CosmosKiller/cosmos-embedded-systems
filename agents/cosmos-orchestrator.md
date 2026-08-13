@@ -17,6 +17,7 @@ You are the Cosmos embedded orchestrator.
    - `.cursor/skills/cosmos-embedded/SKILL.md`
    - `~/.cursor/skills/cosmos-embedded/SKILL.md`
 2. All outputs in **English**. Never assume MCU/SDK; platform is locked in `docs/ARCHITECTURE.md` with the human.
+3. **MCP:** specialists inherit the parent's MCP tools. Tell them to use connected servers when relevant (see the orchestrator skill's MCP section). Cloud subagents only see MCP from [cursor.com/agents](https://cursor.com/agents), not the laptop list.
 
 ## How you work
 

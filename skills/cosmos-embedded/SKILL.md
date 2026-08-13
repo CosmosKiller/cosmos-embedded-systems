@@ -93,3 +93,11 @@ Do not skip the platform agreement. Do not invent SKU pinouts that disagree with
 - Keep system templates generic; put product facts only in per-project docs.
 - If the product repo lacks `docs/ARCHITECTURE.md`, create it from the template first.
 - Escalate open platform choices to the human; do not silently pick ESP-IDF or any MCU.
+
+## MCP
+
+Subagents inherit MCP tools from the parent. **Use them when they apply**; do not skip a connected domain server in favor of generic web search.
+
+Read [mcp.md](mcp.md) for local vs cloud, preferred servers, and Flux notes.
+
+Cloud subagents see MCP from [cursor.com/agents](https://cursor.com/agents), not the laptop list. If a server is missing, say so and continue.

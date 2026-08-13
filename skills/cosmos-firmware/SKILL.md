@@ -38,6 +38,15 @@ Templates: `~/myProjects/cosmos-embedded-systems/templates/docs/`
 
 Document pinned toolchains, environment activation, per-app targets, build/clean commands, and artifacts (app binary, OTA, elf). Link to RELEASING and MANUFACTURING.
 
+## MCP
+
+When the agreed platform is ESP-IDF / Espressif, **use MCP first**:
+
+- Espressif documentation — APIs, Kconfig, examples, Matter-on-Espressif behavior
+- ESP Component Registry — search and pin components instead of vendoring unknown drivers
+
+Do not guess IDF API names or component versions when those servers are connected. Details: [mcp.md](../cosmos-embedded/mcp.md).
+
 ## Hand-offs
 
 - Pinout / BOM questions → `cosmos-hardware`

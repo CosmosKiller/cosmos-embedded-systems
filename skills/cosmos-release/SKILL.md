@@ -37,3 +37,7 @@ Full policy template: `~/myProjects/cosmos-embedded-systems/templates/docs/RELEA
 - Bring-up checklist items in HARDWARE device sections
 - Factory test section in MANUFACTURING.md
 - No shipping with unresolved platform `TBD` in ARCHITECTURE.md for that release train
+
+## MCP
+
+When OTA / software-version behavior is Espressif or Matter specific, confirm with Espressif documentation MCP if connected. Details: [mcp.md](../cosmos-embedded/mcp.md).
