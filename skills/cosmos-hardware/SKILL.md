@@ -51,6 +51,8 @@ Template: `~/myProjects/cosmos-embedded-systems/templates/docs/HARDWARE.md`
 
 When Flux is connected, **use it** for schematic, PCB, BOM, and net questions or design changes (one objective per Flux message; wait for the run). Keep firmware GPIO numbers as SoT in `HARDWARE.md`. Do not claim a Flux edit landed unless the agent confirms it.
 
+For part datasheets (MCU, FEM, regulator), prefer **electronics-docs** (TI/ST/ADI) or **Microchip** / **MPLAB-DOCS** over generic web search.
+
 Details: [mcp.md](../cosmos-embedded/mcp.md).
 
 ## Hand-offs

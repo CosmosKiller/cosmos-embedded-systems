@@ -15,13 +15,25 @@ Keep both: subagents for isolation/delegation; skills for procedures and templat
 
 ## MCP
 
-Local subagents **inherit MCP tools from the parent session** and should use them when they apply (Espressif docs, ESP Component Registry, Flux, etc.). Cloud subagents see MCP from [cursor.com/agents](https://cursor.com/agents), not your laptop list. Playbook: `skills/cosmos-embedded/mcp.md`.
+Local subagents **inherit MCP tools from the parent session** and should use them when they apply. Preferred stack (see `skills/cosmos-embedded/mcp.md`):
+
+- Espressif docs + Component Registry (ESP-IDF)
+- Microchip + MPLAB-DOCS (PIC / AVR / SAM)
+- electronics-docs / mcp-docs (TI, ST, ADI datasheets)
+- Flux / **KiCad MCP** (local schematic/PCB + Freerouting)
+
+Cloud subagents see MCP from [cursor.com/agents](https://cursor.com/agents), not your laptop list.
+
+**Full local MCP install (KiCad, Freerouting, Java 21, mcp.json):** see [`docs/MCP_SETUP.md`](docs/MCP_SETUP.md). Template: `templates/mcp/mcp.json.example`.
 
 ## Install locally (once per machine)
 
 ```bash
+chmod +x tools/*.sh
 ./tools/install-skills.sh    # playbooks -> ~/.cursor/skills/
 ./tools/install-agents.sh    # roles     -> ~/.cursor/agents/
+./tools/install-mcps.sh      # KiCad MCP + Freerouting + merge ~/.cursor/mcp.json
+# then: Cursor → Developer: Reload Window
 ```
 
 Then in Agent chat:
@@ -100,14 +112,20 @@ Legacy repos already in production (e.g. FivePieceBasis) stay outside this flow.
 ```
 cosmos-embedded-systems/
 ├── README.md
+├── AGENTS.md
+├── docs/
+│   └── MCP_SETUP.md    # KiCad MCP / Freerouting / mcp.json on a new PC
 ├── agents/             # Cursor subagents (thin role prompts)
 ├── skills/             # playbooks each subagent reads
-├── templates/docs/     # English templates for product repos
+├── templates/
+│   ├── docs/           # English templates for product repos
+│   └── mcp/            # mcp.json.example
 └── tools/
     ├── new-project.sh
     ├── bootstrap-docs.sh
     ├── install-skills.sh
     ├── install-agents.sh
+    ├── install-mcps.sh                # local MCP stack
     ├── install-skills-to-project.sh   # opt-in cloud
     └── install-agents-to-project.sh   # opt-in cloud
 ```

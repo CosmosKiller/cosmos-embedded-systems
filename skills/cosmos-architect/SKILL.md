@@ -56,4 +56,6 @@ Replace `{{PROJECT_NAME}}` and fill tables. Keep the section numbering stable so
 Prefer connected MCP over generic web search. Details: `cosmos-embedded` skill [mcp.md](../cosmos-embedded/mcp.md).
 
 - Espressif documentation — MCU/SDK facts **after** the human is considering Espressif (never to silently lock the platform).
+- Microchip + MPLAB-DOCS — after the human is considering PIC/AVR/SAM/dsPIC.
+- electronics-docs — after the human is considering STM32, TI, or ADI (datasheet/TRM grounding).
 - Flux — only to inspect an existing board's feasibility, not to choose the platform.

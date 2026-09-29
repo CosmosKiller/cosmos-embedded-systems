@@ -45,7 +45,11 @@ When the agreed platform is ESP-IDF / Espressif, **use MCP first**:
 - Espressif documentation — APIs, Kconfig, examples, Matter-on-Espressif behavior
 - ESP Component Registry — search and pin components instead of vendoring unknown drivers
 
-Do not guess IDF API names or component versions when those servers are connected. Details: [mcp.md](../cosmos-embedded/mcp.md).
+When the agreed platform is **Microchip**, use **Microchip** + **MPLAB-DOCS** before guessing register APIs.
+
+When the agreed platform is **STM32 / TI / ADI**, use **electronics-docs** (index datasheet/TRM, quote pages) before guessing.
+
+Do not guess IDF / HAL / register names when those servers are connected. Details: [mcp.md](../cosmos-embedded/mcp.md).
 
 ## Hand-offs
 

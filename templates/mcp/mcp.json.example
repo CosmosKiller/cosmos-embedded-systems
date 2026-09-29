@@ -1,0 +1,38 @@
+{
+  "mcpServers": {
+    "espressif-documentation": {
+      "url": "https://mcp.espressif.com/docs"
+    },
+    "esp-component-registry": {
+      "url": "https://components.espressif.com/mcp"
+    },
+    "flux": {
+      "url": "https://app.flux.ai/mcp"
+    },
+    "microchip": {
+      "url": "https://api.microchip.com/mcp/resources"
+    },
+    "mplab-docs": {
+      "url": "https://ai.microchip.com/tools/mplabdocs/mcp"
+    },
+    "electronics-docs": {
+      "command": "node",
+      "args": ["REPLACE_HOME/MCP/mcp-docs/build/index.js"],
+      "description": "TI / ST / ADI datasheets and TRMs (local FTS index)"
+    },
+    "kicad": {
+      "command": "node",
+      "args": ["REPLACE_HOME/MCP/KiCAD-MCP-Server/dist/index.js"],
+      "env": {
+        "NODE_ENV": "production",
+        "KICAD_PYTHON": "REPLACE_HOME/MCP/KiCAD-MCP-Server/.venv/bin/python",
+        "PYTHONPATH": "REPLACE_HOME/MCP/KiCAD-MCP-Server/.venv/lib/python3.11/site-packages:/usr/lib/python3/dist-packages:/usr/share/kicad/scripting/plugins",
+        "LOG_LEVEL": "info",
+        "KICAD_AUTO_LAUNCH": "false",
+        "JAVA_HOME": "REPLACE_HOME/.local/jdk/current",
+        "FREEROUTING_JAR": "REPLACE_HOME/.kicad-mcp/freerouting.jar"
+      },
+      "description": "KiCAD PCB Design Assistant (local mixelpixx/KiCAD-MCP-Server)"
+    }
+  }
+}
