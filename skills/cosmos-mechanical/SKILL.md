@@ -93,13 +93,9 @@ PCB fit in the same document: File → Import `mech/<board>.step`.
 - **KiCad MCP** — `export_3d` / board info / outline; Freerouting is irrelevant here.
 - **KiCad MCP Pro** — `export_step` / `export_stl` when that server is the active ECAD path.
 - No mechanical MCP is required.
-- **OpenSCAD** (agent CLI):
-  - System: `sudo apt install openscad`, or
-  - User-local AppImage: `~/.local/opt/openscad/OpenSCAD.AppImage` +
-    `~/.local/bin/openscad` (ensure `~/.local/bin` on `PATH`).
+- **OpenSCAD** (agent CLI) — install: harness `docs/MCP_SETUP.md` §2b.
   - Render: `openscad -o mech/box.stl mech/box.scad`
-- **FreeCAD** (human refine):
-  - User-local: `~/.local/opt/freecad/FreeCAD.AppImage` + `~/.local/bin/freecad`
+- **FreeCAD** (human refine) — install: same §2b.
   - **Do not** `freecad file.scad` (unsupported File→Open). Open the agent
     `*-box.step` (preferred) or `.stl`, or GUI File→Import `.scad` in OpenSCAD WB.
   - Example: `freecad mech/led-blink-box.step`

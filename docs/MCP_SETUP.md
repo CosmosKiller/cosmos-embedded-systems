@@ -11,6 +11,7 @@ All paths below assume Linux. Adjust for macOS/Windows as noted in vendor docs.
 ```bash
 cd ~/myProjects/cosmos-embedded-systems   # or your clone path
 chmod +x tools/*.sh
+# Host CAD first (KiCad + OpenSCAD + FreeCAD): see §2b in this doc
 ./tools/install-skills.sh
 ./tools/install-agents.sh
 ./tools/install-mcps.sh                  # KiCad MCP + Freerouting + mcp.json merge
@@ -67,11 +68,118 @@ Index database typically lives under `~/.electronics-docs-mcp/`.
 
 ---
 
+## 2b. Host CAD applications (install once per machine)
+
+These are **desktop apps**, not MCP servers. Agents use them via CLI/GUI (and
+KiCad via the MCP after it is installed). Prefer the recipes below on Linux;
+macOS/Windows: use each vendor’s installer, then keep the same roles
+(OpenSCAD = agent box, FreeCAD = human refine).
+
+Ensure user binaries are on `PATH` (zsh/bash):
+
+```bash
+# once in ~/.zshrc or ~/.bashrc
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+### KiCad 9 or 10 (required for local ECAD MCP)
+
+Needs the GUI **and** the Python `pcbnew` module (`python3 -c "import pcbnew"`).
+
+**Ubuntu / Debian (recommended — KiCad 9 PPA):**
+
+```bash
+sudo add-apt-repository -y ppa:kicad/kicad-9.0-releases
+sudo apt update
+sudo apt install -y kicad
+kicad --version
+python3 -c "import pcbnew; print(pcbnew.GetBuildVersion())"
+```
+
+**Notes**
+
+- Distro packages without the PPA are often too old for this harness.
+- KiCad **10** is fine if you install it from the project’s packages; see
+  [KiCad downloads](https://www.kicad.org/download/).
+- After install, copy global lib tables (see §3) if `~/.config/kicad/9.0/` is empty.
+
+Then run `./tools/install-mcps.sh` (or §3) for the KiCad **MCP** + Freerouting.
+
+### OpenSCAD (agent enclosure iterates)
+
+Preferred for agent-editable lab boxes (`.scad` → STL).
+
+**Option A — AppImage (no root; matches this harness machine):**
+
+```bash
+mkdir -p ~/.local/opt/openscad ~/.local/bin
+curl -fL --retry 3 \
+  -o ~/.local/opt/openscad/OpenSCAD.AppImage \
+  https://files.openscad.org/OpenSCAD-2021.01-x86_64.AppImage
+chmod +x ~/.local/opt/openscad/OpenSCAD.AppImage
+
+cat > ~/.local/bin/openscad << 'EOF'
+#!/usr/bin/env bash
+APP="$HOME/.local/opt/openscad/OpenSCAD.AppImage"
+# If FUSE is missing, uncomment the next line:
+# exec "$APP" --appimage-extract-and-run "$@"
+exec "$APP" "$@"
+EOF
+chmod +x ~/.local/bin/openscad
+
+openscad --version
+# openscad -o mech/box.stl mech/box.scad
+```
+
+If the AppImage fails with a FUSE error, switch the wrapper to
+`--appimage-extract-and-run` (same pattern as FreeCAD below).
+
+**Option B — apt:**
+
+```bash
+sudo apt install -y openscad
+openscad --version
+```
+
+### FreeCAD (human enclosure refine)
+
+Preferred open-source CAD to open the agent’s box STEP/STL (and optionally
+Import `.scad` via the OpenSCAD workbench). Fusion / SolidWorks remain optional.
+
+**AppImage (no root; FreeCAD 1.1.x):**
+
+```bash
+mkdir -p ~/.local/opt/freecad ~/.local/bin
+curl -fL --retry 3 \
+  -o ~/.local/opt/freecad/FreeCAD.AppImage \
+  https://github.com/FreeCAD/FreeCAD/releases/download/1.1.4/FreeCAD_1.1.4-Linux-x86_64-py311.AppImage
+chmod +x ~/.local/opt/freecad/FreeCAD.AppImage
+
+cat > ~/.local/bin/freecad << 'EOF'
+#!/usr/bin/env bash
+APP="$HOME/.local/opt/freecad/FreeCAD.AppImage"
+export PATH="$HOME/.local/bin:$PATH"   # so OpenSCAD WB finds openscad
+exec "$APP" --appimage-extract-and-run "$@"
+EOF
+chmod +x ~/.local/bin/freecad
+ln -sfn freecad ~/.local/bin/FreeCAD
+
+freecad --version
+# Prefer opening the agent box solid:
+#   freecad /path/to/product/mech/*-box.step
+# File→Open does NOT support .scad; use GUI OpenSCAD WB → File → Import, or STEP/STL.
+```
+
+Check [FreeCAD releases](https://github.com/FreeCAD/FreeCAD/releases) for newer
+`Linux-x86_64` AppImages and bump the URL when you upgrade.
+
+---
+
 ## 3. KiCad MCP (mixelpixx/KiCAD-MCP-Server)
 
 ### Prerequisites
 
-- **KiCad 9.0+** with Python `pcbnew` (`python3 -c "import pcbnew"`).
+- **KiCad 9.0+** installed (§2b) with Python `pcbnew` (`python3 -c "import pcbnew"`).
 - **Node.js 20+** (nvm is fine).
 - Global symbol/footprint tables (once per user):
 
@@ -237,59 +345,34 @@ PY="$HOME/MCP/kicad-mcp-pro-venv/lib/python3.13/site-packages/kicad_mcp/utils/ng
 
 ---
 
-## 5b. OpenSCAD (agent enclosure iterates)
+## 5b. OpenSCAD / FreeCAD usage (after §2b install)
 
-Preferred for **agent-editable** lab boxes (`.scad` → STL). Final CAD (Fusion /
-SolidWorks / …) stays a human choice; keep STEP + `.scad` under `mech/` for the
-agent loop.
-
-**This machine (no root):** AppImage + wrapper
+Install steps: **§2b**. Quick checks:
 
 ```bash
-# already installed example layout:
-~/.local/opt/openscad/OpenSCAD.AppImage
-~/.local/bin/openscad          # wrapper; requires ~/.local/bin on PATH
-openscad --version             # OpenSCAD version 2021.01
+openscad --version
 openscad -o mech/box.stl mech/box.scad
-```
 
-**With apt (optional):** `sudo apt install openscad`
-
----
-
-## 5c. FreeCAD (human enclosure refine)
-
-Preferred **human** CAD in this harness (open source). Opens the agent's `.scad`
-(OpenSCAD workbench; needs `openscad` on `PATH`), then export STEP/STL. Fusion /
-SolidWorks remain optional later via STEP.
-
-**This machine (no root):** AppImage + wrapper
-
-```bash
-~/.local/opt/freecad/FreeCAD.AppImage
-~/.local/bin/freecad
 freecad --version
-# Open agent box solid (NOT the .scad — File→Open does not support .scad):
-freecad ~/myProjects/led-blink-kicad/mech/led-blink-box.step
-# PCB reference:
-freecad ~/myProjects/led-blink-kicad/mech/led-blink-kicad.step
-# Optional: GUI → OpenSCAD workbench → File → Import → *.scad
+freecad /path/to/product/mech/*-box.step    # agent box solid
+# GUI: OpenSCAD workbench → File → Import → *.scad (optional)
+# PCB fit: File → Import mech/<board>.step
 ```
-
-Also import `mech/<board>.step` in the same FreeCAD document for PCB fit.
 
 ---
 
 ## 6. New PC checklist
 
-1. Install KiCad 9 or 10, Node 20+, git, curl.
-2. Clone `cosmos-embedded-systems`; run `install-skills.sh`, `install-agents.sh`,
+1. Install **KiCad 9/10**, **OpenSCAD**, **FreeCAD** per §2b; put `~/.local/bin` on `PATH`.
+2. Install Node 20+, git, curl.
+3. Clone `cosmos-embedded-systems`; run `install-skills.sh`, `install-agents.sh`,
    `install-mcps.sh`.
-3. Clone/build `mcp-docs` if you need electronics-docs.
-4. Confirm `~/.cursor/mcp.json` paths exist (`test -f …/dist/index.js`).
-5. Reload Cursor → MCP panel shows servers Connected.
-6. Ask the agent: “List KiCad tool categories” and “check_freerouting”.
-7. Optional: install kicad-mcp-pro + ngspice; reload; run `sim_run_transient`.
+4. Clone/build `mcp-docs` if you need electronics-docs.
+5. Confirm `~/.cursor/mcp.json` paths exist (`test -f …/dist/index.js`).
+6. Reload Cursor → MCP panel shows servers Connected.
+7. Ask the agent: “List KiCad tool categories” and “check_freerouting”.
+8. Optional: install kicad-pro + ngspice (§5); reload; run `sim_run_transient`.
+9. Optional: `openscad -o …stl …scad` and open the box STEP in FreeCAD.
 
 ## Troubleshooting
 
@@ -302,3 +385,6 @@ Also import `mech/<board>.step` in the same FreeCAD document for PCB fit.
 | Empty PCB after schematic | Assign footprints + `sync_schematic_to_board` |
 | Auto-save refused | `open_board` / `save_board` with `force=true` after external edits |
 | `sim_run_transient` missing `.data` / quoted path in log | Unquote `wrdata`/`write` in `ngspice.py` (see §5); restart `kicad-pro` |
+| `openscad` / `freecad` not found | Install §2b; ensure `~/.local/bin` is on `PATH` |
+| AppImage FUSE error | Use `--appimage-extract-and-run` in the wrapper (FreeCAD recipe) |
+| `File format not supported: *.scad` in FreeCAD | Open `*-box.step` / `.stl`, or GUI Import in OpenSCAD WB |

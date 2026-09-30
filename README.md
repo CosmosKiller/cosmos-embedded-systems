@@ -24,7 +24,7 @@ Local subagents **inherit MCP tools from the parent session** and should use the
 
 Cloud subagents see MCP from [cursor.com/agents](https://cursor.com/agents), not your laptop list.
 
-**Full local MCP install (KiCad, Freerouting, Java 21, mcp.json):** see [`docs/MCP_SETUP.md`](docs/MCP_SETUP.md). Template: `templates/mcp/mcp.json.example`.
+**Full local MCP + host CAD install (KiCad, Freerouting, OpenSCAD, FreeCAD):** see [`docs/MCP_SETUP.md`](docs/MCP_SETUP.md). Template: `templates/mcp/mcp.json.example`.
 
 ## Install locally (once per machine)
 
