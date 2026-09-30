@@ -111,11 +111,14 @@ Legacy repos already in production (e.g. FivePieceBasis) stay outside this flow.
 
 **Platform:** never assumed. Lock MCU/SDK in `ARCHITECTURE.md` with the Architect before filling definitive build/manufacturing commands.
 
+**License:** [MIT](LICENSE)
+
 ## Layout
 
 ```
 cosmos-embedded-systems/
 ├── README.md
+├── LICENSE             # MIT
 ├── AGENTS.md
 ├── docs/
 │   └── MCP_SETUP.md    # KiCad MCP / Freerouting / mcp.json on a new PC
