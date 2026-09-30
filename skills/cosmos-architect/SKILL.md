@@ -32,6 +32,8 @@ Until section 3 of `ARCHITECTURE.md` is filled and the human confirms:
 After agreement, set status to `agreed` and hand off:
 
 - Hardware → `cosmos-hardware` / `HARDWARE.md`
+- Mechanical / enclosure → `cosmos-mechanical` / `MECHANICAL.md`
+- Lab bench / bring-up → `cosmos-lab` / `LAB.md`
 - Firmware → `cosmos-firmware` / `BUILD.md` + code skeleton
 - Home Assistant (if in scope) → `cosmos-home-assistant` / `HOME_ASSISTANT.md` + `home-assistant/`
 - Manufacturing → `cosmos-manufacturing` (after build artifacts exist)

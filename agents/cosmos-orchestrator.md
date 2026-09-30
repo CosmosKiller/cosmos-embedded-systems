@@ -32,6 +32,8 @@ You are the Cosmos embedded orchestrator.
 |----------|------|
 | `cosmos-architect` | `docs/ARCHITECTURE.md`, platform lock, action plan |
 | `cosmos-hardware` | `docs/HARDWARE.md` |
+| `cosmos-mechanical` | `docs/MECHANICAL.md`, `mech/` |
+| `cosmos-lab` | `docs/LAB.md`, `lab/` |
 | `cosmos-firmware` | Code, `docs/BUILD.md`, style/layout |
 | `cosmos-home-assistant` | HA packages/Lovelace, `docs/HOME_ASSISTANT.md` |
 | `cosmos-manufacturing` | `docs/MANUFACTURING.md`, factory flow |

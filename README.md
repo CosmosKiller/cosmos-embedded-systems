@@ -1,6 +1,6 @@
 # cosmos-embedded-systems
 
-Reusable harness for Cosmos embedded product development: English doc templates, Cursor **subagents** (roles), and **skills** (playbooks) covering idea → architecture → hardware → firmware → Home Assistant → manufacturing → release.
+Reusable harness for Cosmos embedded product development: English doc templates, Cursor **subagents** (roles), and **skills** (playbooks) covering idea → architecture → hardware → mechanical → lab bench → firmware → Home Assistant → manufacturing → release.
 
 ## Subagents vs skills
 
@@ -50,6 +50,8 @@ Or ask naturally: “Use the cosmos-architect subagent to lock the platform.”
 | `cosmos-orchestrator` | `cosmos-embedded` | Pipeline / hand-offs |
 | `cosmos-architect` | `cosmos-architect` | `ARCHITECTURE.md`, platform agreement |
 | `cosmos-hardware` | `cosmos-hardware` | `HARDWARE.md` |
+| `cosmos-mechanical` | `cosmos-mechanical` | `MECHANICAL.md`, `mech/` |
+| `cosmos-lab` | `cosmos-lab` | `LAB.md`, `lab/` |
 | `cosmos-firmware` | `cosmos-firmware` | Code, layout/style, `BUILD.md` |
 | `cosmos-home-assistant` | `cosmos-home-assistant` | HA packages, Lovelace, cards |
 | `cosmos-manufacturing` | `cosmos-manufacturing` | `MANUFACTURING.md`, factory flow |
@@ -96,6 +98,8 @@ Legacy repos already in production (e.g. FivePieceBasis) stay outside this flow.
 |------|--------|
 | `ARCHITECTURE.md` | Per project — human ↔ architect agreement + action plan |
 | `HARDWARE.md` | Per project — HW source of truth (design rules + per-device sections) |
+| `MECHANICAL.md` | Per project — enclosure / PCB fit / `mech/` |
+| `LAB.md` | Per project — bench bring-up / measure vs sim / `lab/` |
 | `BUILD.md` | Per project — platform build system |
 | `MANUFACTURING.md` | Per project — factory / flash / ship |
 | `HOME_ASSISTANT.md` | Per project — HA packages / Lovelace / adoption |

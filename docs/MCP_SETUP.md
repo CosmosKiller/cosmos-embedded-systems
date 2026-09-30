@@ -36,6 +36,7 @@ Optional cloud/product copy:
 | `mplab-docs` | HTTP | MPLAB / Microchip how-to docs |
 | `electronics-docs` | Local stdio | TI / ST / ADI PDF index (`mcp-docs`) |
 | `kicad` | Local stdio | Local schematic/PCB (KiCAD-MCP-Server) + Freerouting |
+| `kicad-pro` | Local stdio | KiCad MCP Pro — simulation profile (`sim_*`, ngspice CLI) |
 
 Preferred usage by role: `skills/cosmos-embedded/mcp.md`.
 
@@ -187,7 +188,99 @@ export PYTHONPATH="$HOME/MCP/KiCAD-MCP-Server/.venv/lib/python3.11/site-packages
 
 ---
 
-## 5. New PC checklist
+## 5. KiCad MCP Pro + ngspice (optional simulation)
+
+Use a **separate** Cursor MCP entry (`kicad-pro`) so it does not collide with
+mixelpixx `kicad`. Needs Python ≥ 3.13 (e.g. `uv` venv) and an ngspice CLI.
+
+Typical layout on this machine:
+
+```text
+~/MCP/kicad-mcp-pro/              # clone of LNayak07/kicad-mcp-pro
+~/MCP/kicad-mcp-pro-venv/         # uv/python3.13 venv with the package
+~/.local/bin/ngspice              # ngspice-36+ user install
+```
+
+Example `~/.cursor/mcp.json` entry (adjust project dir per product):
+
+```json
+"kicad-pro": {
+  "command": "REPLACE_HOME/MCP/kicad-mcp-pro-venv/bin/kicad-mcp-pro",
+  "args": [],
+  "env": {
+    "KICAD_MCP_PROJECT_DIR": "REPLACE_HOME/myProjects/led-blink-kicad",
+    "KICAD_MCP_PROFILE": "simulation",
+    "KICAD_MCP_OPERATING_MODE": "write",
+    "KICAD_MCP_NGSPICE_CLI": "REPLACE_HOME/.local/bin/ngspice"
+  }
+}
+```
+
+Smoke test after reload: `sim_run_transient` on a tiny `.cir` under the project
+(e.g. `sim/timing_hi_for_pro.cir`) with `probe_nets` matching net names in the
+netlist. Outputs land under `<project>/output/simulation/`.
+
+### ngspice-36 `wrdata` / `write` path quoting
+
+Ubuntu/deb ngspice-36 rejects **quoted absolute paths** in `wrdata` / `write`
+(control deck). Upstream `kicad-mcp-pro` emits quotes; patch the installed
+module (re-run after `pip`/`uv` upgrades of the package):
+
+```bash
+PY="$HOME/MCP/kicad-mcp-pro-venv/lib/python3.13/site-packages/kicad_mcp/utils/ngspice.py"
+# Replace: wrdata "{data_path}"  →  wrdata {data_path}
+# Replace: write "{raw_path}"    →  write {raw_path}
+# Then reload the kicad-pro MCP (or kill its process) so Python reloads the file.
+```
+
+`./tools/install-mcps.sh` applies this patch when the venv file exists.
+
+---
+
+## 5b. OpenSCAD (agent enclosure iterates)
+
+Preferred for **agent-editable** lab boxes (`.scad` → STL). Final CAD (Fusion /
+SolidWorks / …) stays a human choice; keep STEP + `.scad` under `mech/` for the
+agent loop.
+
+**This machine (no root):** AppImage + wrapper
+
+```bash
+# already installed example layout:
+~/.local/opt/openscad/OpenSCAD.AppImage
+~/.local/bin/openscad          # wrapper; requires ~/.local/bin on PATH
+openscad --version             # OpenSCAD version 2021.01
+openscad -o mech/box.stl mech/box.scad
+```
+
+**With apt (optional):** `sudo apt install openscad`
+
+---
+
+## 5c. FreeCAD (human enclosure refine)
+
+Preferred **human** CAD in this harness (open source). Opens the agent's `.scad`
+(OpenSCAD workbench; needs `openscad` on `PATH`), then export STEP/STL. Fusion /
+SolidWorks remain optional later via STEP.
+
+**This machine (no root):** AppImage + wrapper
+
+```bash
+~/.local/opt/freecad/FreeCAD.AppImage
+~/.local/bin/freecad
+freecad --version
+# Open agent box solid (NOT the .scad — File→Open does not support .scad):
+freecad ~/myProjects/led-blink-kicad/mech/led-blink-box.step
+# PCB reference:
+freecad ~/myProjects/led-blink-kicad/mech/led-blink-kicad.step
+# Optional: GUI → OpenSCAD workbench → File → Import → *.scad
+```
+
+Also import `mech/<board>.step` in the same FreeCAD document for PCB fit.
+
+---
+
+## 6. New PC checklist
 
 1. Install KiCad 9 or 10, Node 20+, git, curl.
 2. Clone `cosmos-embedded-systems`; run `install-skills.sh`, `install-agents.sh`,
@@ -196,6 +289,7 @@ export PYTHONPATH="$HOME/MCP/KiCAD-MCP-Server/.venv/lib/python3.11/site-packages
 4. Confirm `~/.cursor/mcp.json` paths exist (`test -f …/dist/index.js`).
 5. Reload Cursor → MCP panel shows servers Connected.
 6. Ask the agent: “List KiCad tool categories” and “check_freerouting”.
+7. Optional: install kicad-mcp-pro + ngspice; reload; run `sim_run_transient`.
 
 ## Troubleshooting
 
@@ -207,3 +301,4 @@ export PYTHONPATH="$HOME/MCP/KiCAD-MCP-Server/.venv/lib/python3.11/site-packages
 | Freerouting `ready: false` | Java 21+ via `JAVA_HOME`; JAR at `FREEROUTING_JAR` |
 | Empty PCB after schematic | Assign footprints + `sync_schematic_to_board` |
 | Auto-save refused | `open_board` / `save_board` with `force=true` after external edits |
+| `sim_run_transient` missing `.data` / quoted path in log | Unquote `wrdata`/`write` in `ngspice.py` (see §5); restart `kicad-pro` |

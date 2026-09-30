@@ -19,6 +19,8 @@ All harness output is **English**. Platform is never assumed: the human and the 
 |-----|-------|------------------|
 | `docs/ARCHITECTURE.md` | Per project — agreement + action plan | `cosmos-architect` |
 | `docs/HARDWARE.md` | Per project — HW source of truth | `cosmos-hardware` |
+| `docs/MECHANICAL.md` | Per project — enclosure / mech | `cosmos-mechanical` |
+| `docs/LAB.md` | Per project — bench bring-up | `cosmos-lab` |
 | `docs/BUILD.md` | Per project — platform build | `cosmos-firmware` |
 | `docs/MANUFACTURING.md` | Per project — factory flow | `cosmos-manufacturing` |
 | `docs/HOME_ASSISTANT.md` | Per project — HA adoption | `cosmos-home-assistant` |
@@ -67,6 +69,8 @@ For Cloud Agents, copy **agents and skills** into the product **only when you ch
 | Architect | `cosmos-architect` | `cosmos-architect` | `ARCHITECTURE.md`, platform lock, action plan |
 | Firmware | `cosmos-firmware` | `cosmos-firmware` | code, `BUILD.md`, layout/style compliance |
 | Hardware | `cosmos-hardware` | `cosmos-hardware` | `HARDWARE.md` (schema + device sections) |
+| Mechanical | `cosmos-mechanical` | `cosmos-mechanical` | `MECHANICAL.md`, `mech/` (STEP, box, STL) |
+| Lab bench | `cosmos-lab` | `cosmos-lab` | `LAB.md`, `lab/` captures / RESULTS |
 | Home Assistant | `cosmos-home-assistant` | `cosmos-home-assistant` | packages, Lovelace, cards, `HOME_ASSISTANT.md` |
 | Manufacturing | `cosmos-manufacturing` | `cosmos-manufacturing` | `MANUFACTURING.md`, factory steps |
 | Release / QA | `cosmos-release` | `cosmos-release` | version bumps, tags, release checklist |
@@ -81,9 +85,11 @@ When coordinating: invoke `/cosmos-orchestrator` or ask the parent to delegate. 
 4. **Hardware definition** → `HARDWARE.md` design rules + first device section.
 5. **Firmware skeleton** → layout + style + `BUILD.md` + bring-up.
 6. **Features** → product work with GPIO SoT in HARDWARE.
-7. **Home Assistant adoption** → packages / Lovelace / cards (`cosmos-home-assistant`) when the product targets HA.
-8. **Manufacturing** → `MANUFACTURING.md` + dry-run factory flow.
-9. **Test / release** → checklists + `RELEASING.md`.
+7. **Enclosure / mechanical** → `MECHANICAL.md` + `mech/` STEP / parametric box (`cosmos-mechanical`) when the product needs a case.
+8. **Lab bench** → `LAB.md` + `lab/` bring-up / measure vs sim (`cosmos-lab`) before calling a proto “proven”.
+9. **Home Assistant adoption** → packages / Lovelace / cards (`cosmos-home-assistant`) when the product targets HA.
+10. **Manufacturing** → `MANUFACTURING.md` + dry-run factory flow.
+11. **Test / release** → checklists + `RELEASING.md`.
 
 Do not skip the platform agreement. Do not invent SKU pinouts that disagree with firmware.
 

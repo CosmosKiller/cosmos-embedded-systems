@@ -58,10 +58,13 @@ EOF
 
 "${BOOTSTRAP}" "${TARGET}"
 
-# Fill project name placeholder in ARCHITECTURE.md when present.
-ARCH="${TARGET}/docs/ARCHITECTURE.md"
-if [[ -f "${ARCH}" ]]; then
-  sed -i "s/{{PROJECT_NAME}}/${NAME}/g" "${ARCH}"
+# Fill project name placeholders in docs when present.
+if [[ -d "${TARGET}/docs" ]]; then
+  for doc in "${TARGET}/docs/"*.md; do
+    [[ -f "${doc}" ]] || continue
+    sed -i "s/{{PROJECT_NAME}}/${NAME}/g" "${doc}"
+    sed -i "s/{{REPO_NAME}}/${NAME}/g" "${doc}"
+  done
 fi
 
 # Seed REPO_LAYOUT placeholder if present.

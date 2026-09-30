@@ -98,6 +98,36 @@ log "Building KiCAD-MCP-Server"
 PY_VER="$("${KICAD_MCP}/.venv/bin/python" -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')"
 VENV_SITE="${KICAD_MCP}/.venv/lib/python${PY_VER}/site-packages"
 
+# --- Optional: patch kicad-mcp-pro ngspice wrdata quoting (ngspice-36) ---
+# Upstream quotes absolute paths; Ubuntu ngspice-36 rejects that and leaves no .data.
+KICAD_PRO_NGSPICE="${MCP_ROOT}/kicad-mcp-pro-venv/lib/python3.13/site-packages/kicad_mcp/utils/ngspice.py"
+if [[ -f "${KICAD_PRO_NGSPICE}" ]]; then
+  log "Patching kicad-mcp-pro ngspice.py wrdata/write paths (unquoted for ngspice-36)"
+  python3 - "${KICAD_PRO_NGSPICE}" <<'PY'
+from pathlib import Path
+import sys
+p = Path(sys.argv[1])
+text = p.read_text()
+orig = text
+text = text.replace(
+    "wrdata_line = f'wrdata \"{data_path}\" {\" \".join(header_exprs)}'",
+    "wrdata_line = f'wrdata {data_path} {\" \".join(header_exprs)}'  # unquoted: ngspice-36",
+)
+text = text.replace("f'write \"{raw_path}\" all\\n'", "f'write {raw_path} all\\n'")
+text = text.replace('f\'write "{raw_path}" all\\n\'', "f'write {raw_path} all\\n'")
+if text == orig:
+    if 'wrdata {data_path}' in text or "wrdata {data_path}" in text:
+        print("already patched")
+    else:
+        print("warn: expected wrdata pattern not found; leave file unchanged")
+else:
+    p.write_text(text)
+    print(f"patched {p}")
+PY
+else
+  log "Skip kicad-pro wrdata patch (no ${KICAD_PRO_NGSPICE})"
+fi
+
 # --- Merge mcp.json ---
 [[ -f "${EXAMPLE}" ]] || die "missing ${EXAMPLE}"
 python3 - "${EXAMPLE}" "${MCP_JSON}" "${HOME_DIR}" "${KICAD_MCP}" "${VENV_SITE}" "${JDK_ROOT}/current" "${JAR_DIR}/freerouting.jar" <<'PY'

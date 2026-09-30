@@ -49,6 +49,8 @@ Do **not** query Espressif MCP for an STM32 project (or the reverse). Match the 
 - **Architect** — After the human is considering a vendor, use that vendor’s MCP for trade-offs. Never silently lock a platform. Flux only for feasibility of an existing board.
 - **Firmware** — Use the platform MCP before guessing APIs or vendoring drivers (Espressif / MPLAB-DOCS / electronics-docs).
 - **Hardware** — Flux (or KiCad) for schematic/PCB/BOM; keep `docs/HARDWARE.md` as GPIO SoT. Use electronics-docs / Microchip for part datasheets when picking passives/ICs.
+- **Mechanical** — KiCad `export_3d` / STEP for board envelope; parametric OpenSCAD (or FreeCAD) for the box. No dedicated enclosure MCP required.
+- **Lab** — No lab MCP required; use platform flash/monitor docs (Espressif / MPLAB) when the DUT is an MCU. Keep measured numbers in `docs/LAB.md` / `lab/`.
 - **Manufacturing / Release** — Platform MCP when factory/OTA/partition guidance is vendor-specific.
 - **Home Assistant** — No Cosmos-standard HA MCP yet; product `home-assistant/` + HA docs. Use platform MCP only for entity/cluster contracts.
 
